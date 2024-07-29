@@ -1,4 +1,4 @@
-﻿namespace LTOCS.Models.Request.Account
+﻿namespace LTOCS_API.Models.Request.Account
 {
     public class RegisterRequest
     {

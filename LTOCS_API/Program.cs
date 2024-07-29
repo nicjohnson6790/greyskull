@@ -1,7 +1,7 @@
-using LTOCS.Config;
-using LTOCS.Database;
-using LTOCS.Middleware;
-using LTOCS.Models.Db;
+using LTOCS_API.Config;
+using LTOCS_API.Database;
+using LTOCS_API.Middleware;
+using LTOCS_API.Models.Db;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;

@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 
-namespace LTOCS.Models.Db
+namespace LTOCS_API.Models.Db
 {
     public class ApplicationUser : IdentityUser
     {

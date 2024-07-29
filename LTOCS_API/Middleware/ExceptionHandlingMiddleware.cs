@@ -4,7 +4,7 @@ using Microsoft.Extensions.Logging;
 using System.Net;
 using System.Text.Json;
 
-namespace LTOCS.Middleware
+namespace LTOCS_API.Middleware
 {
     public class ExceptionHandlingMiddleware
     {
@@ -16,7 +16,8 @@ namespace LTOCS.Middleware
             RequestDelegate next,
             ILogger<ExceptionHandlingMiddleware> logger,
             IHostEnvironment env
-        ) {
+        )
+        {
             _next = next;
             _logger = logger;
             _env = env;
@@ -24,7 +25,8 @@ namespace LTOCS.Middleware
 
         public async Task InvokeAsync(
             HttpContext context
-        ) {
+        )
+        {
             try
             {
                 await _next(context);
@@ -42,8 +44,8 @@ namespace LTOCS.Middleware
             context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
 
             var response = _env.IsDevelopment()
-                ? new { StatusCode = context.Response.StatusCode, Message = ex.ToString() }
-                : new { StatusCode = context.Response.StatusCode, Message = "An internal server error ocurred." };
+                ? new { context.Response.StatusCode, Message = ex.ToString() }
+                : new { context.Response.StatusCode, Message = "An internal server error ocurred." };
 
             var jsonResponse = JsonSerializer.Serialize(response);
 
