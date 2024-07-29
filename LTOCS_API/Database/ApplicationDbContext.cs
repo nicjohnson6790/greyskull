@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
-namespace LTOCS.Data
+namespace LTOCS.Database
 {
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {

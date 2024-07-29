@@ -1,15 +1,11 @@
 ﻿using LTOCS.Config;
-using LTOCS.Data;
+using LTOCS.Database;
 using LTOCS.Extensions;
 using LTOCS.Models.Db;
 using LTOCS.Models.Request.Account;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Text;
 
 namespace LTOCS.Controllers
 {
