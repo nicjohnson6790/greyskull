@@ -1,4 +1,4 @@
-﻿namespace LTOCS.Config
+﻿namespace LTOCS_API.Config
 {
     public class ConnectionConfig
     {
