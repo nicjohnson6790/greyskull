@@ -1,8 +1,8 @@
-﻿using LTOCS_API.Models.Db;
+﻿using API.Models.Db;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
-namespace LTOCS_API.Database
+namespace API.Database
 {
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {

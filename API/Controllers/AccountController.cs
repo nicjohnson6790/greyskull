@@ -1,13 +1,13 @@
-﻿using LTOCS_API.Config;
-using LTOCS_API.Database;
-using LTOCS_API.Extensions;
-using LTOCS_API.Models.Db;
-using LTOCS_API.Models.Request.Account;
+﻿using API.Config;
+using API.Contracts.AccountController;
+using API.Database;
+using API.Extensions;
+using API.Models.Db;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
-namespace LTOCS_API.Controllers
+namespace API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
@@ -32,17 +32,18 @@ namespace LTOCS_API.Controllers
         }
 
         [HttpPost("register")]
+        [ProducesResponseType(typeof(RegisterResponse), 200)]
         public async Task<IActionResult> Register(
-            [FromBody] RegisterRequest registerRequest
+            [FromBody] RegisterRequest request
         )
         {
             var user = new ApplicationUser
             {
-                UserName = registerRequest.Username,
-                Email = registerRequest.Email
+                UserName = request.Username,
+                Email = request.Email
             };
 
-            var result = await _userManager.CreateAsync(user, registerRequest.Password);
+            var result = await _userManager.CreateAsync(user, request.Password);
 
             if (result.Succeeded)
             {
@@ -53,13 +54,14 @@ namespace LTOCS_API.Controllers
         }
 
         [HttpPost("authenticate")]
+        [ProducesResponseType(typeof(LoginResponse), 200)]
         public async Task<IActionResult> Authenticate(
-            [FromBody] LoginRequest loginRequest
+            [FromBody] LoginRequest request
         )
         {
-            var user = await _userManager.FindByNameAsync(loginRequest.Username);
+            var user = await _userManager.FindByNameAsync(request.Username);
 
-            if (user != null && await _userManager.CheckPasswordAsync(user, loginRequest.Password))
+            if (user != null && await _userManager.CheckPasswordAsync(user, request.Password))
             {
                 var token = user.GetJwtAccessTokenString(_jwtConfig);
 
@@ -81,11 +83,12 @@ namespace LTOCS_API.Controllers
         }
 
         [HttpPost("refresh-token")]
+        [ProducesResponseType(typeof(RefreshTokenResponse), 200)]
         public async Task<IActionResult> RefreshToken(
-            [FromBody] RefreshTokenRequest refreshTokenRequest
+            [FromBody] RefreshTokenRequest request
         )
         {
-            var refreshToken = await _context.RefreshTokens.FirstOrDefaultAsync(t => t.Token == refreshTokenRequest.RefreshToken);
+            var refreshToken = await _context.RefreshTokens.FirstOrDefaultAsync(t => t.Token == request.RefreshToken);
 
             if (refreshToken == null || refreshToken.IsRevoked || refreshToken.ExpiryDate <= DateTime.UtcNow)
             {
@@ -104,6 +107,7 @@ namespace LTOCS_API.Controllers
         }
 
         [HttpPost("logout")]
+        [ProducesResponseType(typeof(LogoutResponse), 200)]
         public async Task<IActionResult> Logout(
             [FromBody] LogoutRequest logoutRequest
         )

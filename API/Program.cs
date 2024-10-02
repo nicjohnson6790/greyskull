@@ -1,9 +1,11 @@
-using LTOCS_API.Config;
-using LTOCS_API.Database;
-using LTOCS_API.Middleware;
-using LTOCS_API.Models.Db;
+using API.Config;
+using API.Contracts;
+using API.Database;
+using API.Middleware;
+using API.Models.Db;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
@@ -52,12 +54,29 @@ builder.Services.AddAuthentication(options =>
 // Add services to the container.
 
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
+builder.Services.Configure<MvcOptions>(options =>
+{
+    options.Filters.Add(new ConsumesAttribute("application/json"));
+    options.Filters.Add(new ProducesAttribute("application/json"));
+});
 
+// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddSwaggerGen(gen =>
 {
     gen.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo { Title = "LTOCS API", Version = "v1" });
+
+    gen.OperationFilter<InternalServerErrorOperationFilter>();
+
+    gen.MapType<ErrorResponse>(() => new OpenApiSchema
+    {
+        Type = "object",
+        Properties = new Dictionary<string, OpenApiSchema>
+        {
+            ["statusCode"] = new OpenApiSchema { Type = "number" },
+            ["message"] = new OpenApiSchema { Type = "string" }
+        }
+    });
 
     gen.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {

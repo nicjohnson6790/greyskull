@@ -1,11 +1,11 @@
-﻿using LTOCS_API.Config;
-using LTOCS_API.Models.Db;
+﻿using API.Config;
+using API.Models.Db;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 
-namespace LTOCS_API.Extensions
+namespace API.Extensions
 {
     public static class UserExtensions
     {

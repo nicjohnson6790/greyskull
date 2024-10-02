@@ -1,9 +1,11 @@
-﻿namespace LTOCS_API.Models.Request.Account
+﻿namespace API.Contracts.AccountController
 {
-    public class LoginRequest
+    public class RegisterRequest
     {
         public string Username { get; set; } = string.Empty;
 
         public string Password { get; set; } = string.Empty;
+
+        public string Email { get; set; } = string.Empty;
     }
 }
