@@ -1,4 +1,4 @@
-﻿namespace LTOCS_API.Models.Request.Account
+﻿namespace API.Contracts.AccountController
 {
     public class LogoutRequest
     {

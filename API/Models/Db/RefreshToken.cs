@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LTOCS_API.Models.Db
+namespace API.Models.Db
 {
     public class RefreshToken
     {

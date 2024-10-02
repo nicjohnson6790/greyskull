@@ -1,10 +1,8 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
+﻿using API.Contracts;
 using System.Net;
 using System.Text.Json;
 
-namespace LTOCS_API.Middleware
+namespace API.Middleware
 {
     public class ExceptionHandlingMiddleware
     {
@@ -44,8 +42,8 @@ namespace LTOCS_API.Middleware
             context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
 
             var response = _env.IsDevelopment()
-                ? new { context.Response.StatusCode, Message = ex.ToString() }
-                : new { context.Response.StatusCode, Message = "An internal server error ocurred." };
+                ? new ErrorResponse { StatusCode = context.Response.StatusCode, Message = ex.ToString() }
+                : new ErrorResponse { StatusCode = context.Response.StatusCode, Message = "An internal server error ocurred." };
 
             var jsonResponse = JsonSerializer.Serialize(response);
 
