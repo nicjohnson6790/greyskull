@@ -8,7 +8,14 @@ namespace API.Middleware
     {
         public void Apply(OpenApiOperation operation, OperationFilterContext context)
         {
-            var errorResponseSchema = context.SchemaGenerator.GenerateSchema(typeof(ErrorResponse), context.SchemaRepository);
+            if (!context.SchemaRepository.Schemas.ContainsKey(nameof(ErrorResponse)))
+            {
+                context.SchemaRepository.Schemas.Add(
+                    nameof(ErrorResponse),
+                    context.SchemaGenerator.GenerateSchema(typeof(ErrorResponse), context.SchemaRepository));
+            }
+
+            var errorResponseSchema = context.SchemaRepository.Schemas[nameof(ErrorResponse)];
 
             operation.Responses.Add("500", new OpenApiResponse
             {
@@ -17,7 +24,14 @@ namespace API.Middleware
                 {
                     ["application/json"] = new OpenApiMediaType
                     {
-                        Schema = errorResponseSchema
+                        Schema = new OpenApiSchema
+                        {
+                            Reference = new OpenApiReference
+                            {
+                                Type = ReferenceType.Schema,
+                                Id = nameof(ErrorResponse)
+                            }
+                        }
                     }
                 }
             });

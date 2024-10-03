@@ -52,8 +52,11 @@ builder.Services.AddAuthentication(options =>
 });
 
 // Add services to the container.
-
-builder.Services.AddControllers();
+builder.Services.AddControllers()
+    .AddNewtonsoftJson(options =>
+    {
+        options.SerializerSettings.DateTimeZoneHandling = Newtonsoft.Json.DateTimeZoneHandling.Utc;
+    });
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.Configure<MvcOptions>(options =>
 {
@@ -64,9 +67,7 @@ builder.Services.Configure<MvcOptions>(options =>
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddSwaggerGen(gen =>
 {
-    gen.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo { Title = "LTOCS API", Version = "v1" });
-
-    gen.OperationFilter<InternalServerErrorOperationFilter>();
+    gen.SwaggerDoc("v1", new OpenApiInfo { Title = "greyskull API", Version = "v1" });
 
     gen.MapType<ErrorResponse>(() => new OpenApiSchema
     {
@@ -77,6 +78,8 @@ builder.Services.AddSwaggerGen(gen =>
             ["message"] = new OpenApiSchema { Type = "string" }
         }
     });
+
+    gen.OperationFilter<InternalServerErrorOperationFilter>();
 
     gen.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {
@@ -107,7 +110,10 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseSwaggerUI(config =>
+    {
+        config.SwaggerEndpoint("v1/swagger.json", "greyskull API V1");
+    });
 }
 
 app.UseHttpsRedirection();
