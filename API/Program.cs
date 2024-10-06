@@ -80,6 +80,7 @@ builder.Services.AddSwaggerGen(gen =>
     });
 
     gen.OperationFilter<InternalServerErrorOperationFilter>();
+    gen.OperationFilter<UnauthorizedResponseOperationFilter>();
 
     gen.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {
