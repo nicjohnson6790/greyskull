@@ -66,8 +66,6 @@ builder.Services.AddSwaggerGen(gen =>
 {
     gen.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo { Title = "LTOCS API", Version = "v1" });
 
-    gen.OperationFilter<InternalServerErrorOperationFilter>();
-
     gen.MapType<ErrorResponse>(() => new OpenApiSchema
     {
         Type = "object",
@@ -77,6 +75,9 @@ builder.Services.AddSwaggerGen(gen =>
             ["message"] = new OpenApiSchema { Type = "string" }
         }
     });
+
+    gen.OperationFilter<InternalServerErrorOperationFilter>();
+    gen.OperationFilter<UnauthorizedResponseOperationFilter>();
 
     gen.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {

@@ -17,7 +17,7 @@ namespace API.Extensions
             {
                 Subject = new ClaimsIdentity(new Claim[]
                 {
-                    new Claim(ClaimTypes.Name, user.UserName ?? throw new ArgumentException("undefined UserName"))
+                    new Claim(ClaimTypes.Name, user.UserName ?? throw new ArgumentException("Undefined UserName"))
                 }),
                 Expires = DateTime.UtcNow.AddMinutes(config.AccessTokenExpiryMinutes),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature),
